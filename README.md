@@ -9,11 +9,12 @@ How the Game Works
 The first game I attempted was a “boxing” game, where I could punch something that appeared on the screen and get points for it:
 
 https://www.youtube.com/watch?v=hsSwy80Rm64
+https://medium.com/@skavinskyy/making-an-ai-gesture-recognition-boxing-game-a3d1b99e1a01
 
 First, with OpenCV and MediaPipe and a tutorial from Nicholas Renotte, I set up some code that uses my webcam and keeps track of my body movement.
 
 cap = cv2.VideoCapture(0)
-# Initiate holistic model
+Initiate holistic model
 with mp_holistic.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5) as holistic:
     
     while cap.isOpened():
@@ -39,7 +40,7 @@ with mp_holistic.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5)
 Then I had to add something to punch on a screen. This page had some neat code on how to add two images together. I wanted to punch something evil-looking so with the help of Dal-E I created a villain.
 
 
-### function based on https://docs.opencv.org/4.x/d0/d86/tutorial_py_image_arithmetics.html
+function based on https://docs.opencv.org/4.x/d0/d86/tutorial_py_image_arithmetics.html
 def image_add(img1,img2,y,x): 
     
     # I want to put logo on top-left corner, So I create a ROI
@@ -89,6 +90,8 @@ Now I just had to calculate the distance between either of my hands that are tra
             distr= np.sqrt((dot[0]-x)*(dot[0]-x)+(dot[1]-y)*(dot[1]-y))
             distl= np.sqrt((dot[0]-xl)*(dot[0]-xl)+(dot[1]-yl)*(dot[1]-yl))
             dist=min(distr,distl)
+
+            
 Sometimes villains punch back. After a while testing this game, I found that just punching a face gets a bit repetitive. So once in a while villain's glove appears on the screen headed toward your face and you have to duck away from it. Here I was able to move the glove and increase its size on the screen. At this point, we keep track of the player’s head and when they duck down or to the side the glove misses and the fight resets. If you don't duck fast enough points are reduced.
 
 Now we set it all in a loop for one round or 60 seconds. Let's see how many points we can get. You can quit by pressing Q. Time and points are tracked on the top of the screen. at the end of the round, you can start another round by pressing r on the keyboard.
